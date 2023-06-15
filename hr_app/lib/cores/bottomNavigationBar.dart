@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hr_app/routes/app_route_address.dart';
 
 class ScaffoldWithNavBar extends StatefulWidget {
   String location;
@@ -17,28 +18,28 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
 
   static const List<MyCustomBottomNavBarItem> tabs = [
     MyCustomBottomNavBarItem(
-      icon: Icon(Icons.home),
-      activeIcon: Icon(Icons.home),
+      icon: Icon(Icons.dashboard_outlined),
+      activeIcon: Icon(Icons.dashboard),
       label: 'HOME',
-      initialLocation: '/',
+      initialLocation: homePage,
     ),
     MyCustomBottomNavBarItem(
-      icon: Icon(Icons.explore_outlined),
-      activeIcon: Icon(Icons.explore),
-      label: 'Likes',
-      initialLocation: '/likes',
+      icon: Icon(Icons.receipt_long_outlined),
+      activeIcon: Icon(Icons.receipt_long),
+      label: 'Claim',
+      initialLocation: claimPage,
     ),
     MyCustomBottomNavBarItem(
-      icon: Icon(Icons.account_circle_outlined),
-      activeIcon: Icon(Icons.account_circle),
-      label: 'Search',
-      initialLocation: '/search',
+      icon: Icon(Icons.monetization_on_outlined),
+      activeIcon: Icon(Icons.monetization_on_rounded),
+      label: 'Payroll',
+      initialLocation: payrollPage,
     ),
     MyCustomBottomNavBarItem(
-      icon: Icon(Icons.storefront_outlined),
+      icon: Icon(Icons.account_circle),
       activeIcon: Icon(Icons.storefront),
-      label: 'Profile',
-      initialLocation: '/profile',
+      label: 'Account',
+      initialLocation: accountPage,
     ),
   ];
 
@@ -58,13 +59,14 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
         onTap: (int index) {
           _goOtherTab(context, index);
         },
-        currentIndex: widget.location == '/'
-            ? 0
-            : widget.location == '/likes'
-                ? 1
-                : widget.location == '/profile'
-                    ? 3
-                    : 2,
+        currentIndex: _currentIndex,
+        // currentIndex: widget.location == homePage
+        //     ? 0
+        //     : widget.location == claimPage
+        //         ? 1
+        //         : widget.location == payrollPage
+        //             ? 3
+        //             : 4,
         items: tabs,
       ),
     );
@@ -79,9 +81,9 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
       _currentIndex = index;
     });
     if (index == 2) {
-      context.push('/search');
+      context.push(payrollPage);
     } else {
-      router.go(location);
+      router.push(location);
     }
   }
 }
