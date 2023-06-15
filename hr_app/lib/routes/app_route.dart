@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hr_app/main.dart';
 import 'package:hr_app/routes/app_route_address.dart';
 import 'package:hr_app/view/Account.dart';
 import 'package:hr_app/view/Home.dart';
@@ -11,18 +12,20 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final router = GoRouter(
-  initialLocation: login,
+  initialLocation: '/',
   navigatorKey: _rootNavigatorKey,
   routes: [
-    GoRoute(
-      path: login,
-      parentNavigatorKey: _rootNavigatorKey,
-      pageBuilder: (context, state) {
-        return NoTransitionPage(
-          child: LoginLayout(),
-        );
-      },
-    ),
+    // GoRoute(
+    //   path: login,
+    //   parentNavigatorKey: _rootNavigatorKey,
+    //   pageBuilder: (context, state) {
+    //     return const NoTransitionPage(
+    //       child: MyHomePage(
+    //         title: 'test',
+    //       ),
+    //     );
+    //   },
+    // ),
     //ShellRoute is stay on one page
     ShellRoute(
       navigatorKey: _shellNavigatorKey,

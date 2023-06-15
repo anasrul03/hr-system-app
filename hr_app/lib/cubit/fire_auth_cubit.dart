@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hr_app/cubit/fire_auth_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 
 class FireAuthRepo extends Cubit<FireAuthState> {
@@ -120,6 +121,12 @@ class FireAuthRepo extends Cubit<FireAuthState> {
           // backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
+      setUserId(String? userId) async {
+        final SharedPreferences preferences =
+            await SharedPreferences.getInstance();
+        //   // Try reading data from the 'action' key. If it doesn't exist, returns null.
+        preferences.setString('userId', userId!);
+      }
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(
           msg: "Error Catch! >> $e",

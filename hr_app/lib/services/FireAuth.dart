@@ -11,8 +11,9 @@ import '../view/Login.dart';
 import '../view/Register.dart';
 
 class CheckAuth extends StatefulWidget {
-  final bool firstTime;
-  CheckAuth({super.key, required this.firstTime});
+  const CheckAuth({
+    super.key,
+  });
 
   @override
   State<CheckAuth> createState() => _CheckAuthState();

@@ -54,55 +54,51 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+// class MyHomePage extends StatefulWidget {
+//   const MyHomePage({super.key, required this.title});
 
-  final String title;
+//   final String title;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+//   @override
+//   State<MyHomePage> createState() => _MyHomePageState();
+// }
 
-class _MyHomePageState extends State<MyHomePage> {
-  setUserId(String? userId) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    //   // Try reading data from the 'action' key. If it doesn't exist, returns null.
-    prefs.setString('userId', userId!);
-  }
+// class _MyHomePageState extends State<MyHomePage> {
+//   setUserId(String? userId) async {
+//     final SharedPreferences prefs = await SharedPreferences.getInstance();
+//     //   // Try reading data from the 'action' key. If it doesn't exist, returns null.
+//     prefs.setString('userId', userId!);
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder<User?>(
-        //Validating the user email & password
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const Center(child: Text("Something went wrong!"));
-          } else if (snapshot.hasData) {
-            if (kDebugMode) {
-              print("Directing to Homepage");
-              print("User id is ${snapshot.data!.uid}");
-            }
-
-            // log(snapshot.data!.uid);
-            // Store userId in local Phone Storage
-            // setUserId(snapshot.data!.uid);
-            return const HomePage();
-          } else {
-            double width = MediaQuery.of(context).size.width;
-            if (kDebugMode) {
-              print("Re-directing to AuthPage");
-              print("the width is $width");
-            }
-            return CheckAuth(
-              firstTime: true,
-            );
-          }
-        },
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: StreamBuilder<User?>(
+//         //Validating the user email & password
+//         stream: FirebaseAuth.instance.authStateChanges(),
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return const Center(child: CircularProgressIndicator());
+//           } else if (snapshot.hasError) {
+//             return const Center(child: Text("Something went wrong!"));
+//           } else if (snapshot.hasData) {
+//             if (kDebugMode) {
+//               print("Directing to Homepage");
+//               print("User id is ${snapshot.data!.uid}");
+//             }
+//             return const HomePage();
+//           } else {
+//             double width = MediaQuery.of(context).size.width;
+//             if (kDebugMode) {
+//               print("Re-directing to AuthPage");
+//               print("the width is $width");
+//             }
+//             return CheckAuth(
+//               firstTime: true,
+//             );
+//           }
+//         },
+//       ),
+//     );
+//   }
+// }
