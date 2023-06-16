@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hr_app/cubit/fire_auth_state.dart';
 // import 'package:hive_flutter/adapters.dart';
 import 'package:hr_app/view/Home.dart';
 import 'package:hr_app/view/Register.dart';
 
 import '../components/customtextformfield.dart';
-import '../cubit/fire_auth_cubit.dart';
+import '../cubit/Fire_auth/fire_auth_cubit.dart';
+import '../cubit/Fire_auth/fire_auth_state.dart';
 
 class LoginLayout extends StatefulWidget {
   VoidCallback? toSignUpPage;
@@ -25,6 +25,7 @@ class _LoginLayoutState extends State<LoginLayout> {
   void initState() {
     super.initState();
     _obscurePassword = true;
+    FireAuthRepo().checkSignin();
   }
 
   @override

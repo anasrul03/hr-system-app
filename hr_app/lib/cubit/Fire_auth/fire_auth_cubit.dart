@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hr_app/cubit/fire_auth_state.dart';
+import 'package:hr_app/view/Login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../main.dart';
+
+import '../../main.dart';
+import 'fire_auth_state.dart';
 
 class FireAuthRepo extends Cubit<FireAuthState> {
   FireAuthRepo() : super(FireAuthState.initial()) {
@@ -25,7 +27,7 @@ class FireAuthRepo extends Cubit<FireAuthState> {
     emit(state.copyWith(password: value, status: FireAuthStatus.initial));
   }
 
-  Future<void> checkSignin() async {
+  Future checkSignin() async {
     final User? user = _auth.currentUser;
 
     if (user != null) {
@@ -77,6 +79,7 @@ class FireAuthRepo extends Cubit<FireAuthState> {
   }
 
   Future logIn(BuildContext context, bool loaded) async {
+    checkSignin();
     try {
       var user = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: state.email,
@@ -109,8 +112,8 @@ class FireAuthRepo extends Cubit<FireAuthState> {
 
   Future signOut(BuildContext context) async {
     try {
-      GoogleSignIn().disconnect();
       await FirebaseAuth.instance.signOut();
+
       emit(state.copyWith(
           email: "", password: "", status: FireAuthStatus.initial));
       Fluttertoast.showToast(
@@ -121,12 +124,6 @@ class FireAuthRepo extends Cubit<FireAuthState> {
           // backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-      setUserId(String? userId) async {
-        final SharedPreferences preferences =
-            await SharedPreferences.getInstance();
-        //   // Try reading data from the 'action' key. If it doesn't exist, returns null.
-        preferences.setString('userId', userId!);
-      }
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(
           msg: "Error Catch! >> $e",
@@ -146,49 +143,6 @@ class FireAuthRepo extends Cubit<FireAuthState> {
           textColor: Colors.white,
           fontSize: 16.0);
     }
-  }
-
-  Future anon(context) async {
-    try {
-      var user = await FirebaseAuth.instance.signInAnonymously();
-      Fluttertoast.showToast(
-          msg: "Sign in as Anon",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 2,
-          // backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      emit(state.copyWith(user: user.user));
-    } catch (e) {
-      print("ERROR: $e");
-      Fluttertoast.showToast(
-          msg: "Cannot Log! Anon : $e",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 2,
-          // backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-    }
-  }
-
-  Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   showLoaderDialog(BuildContext context) {

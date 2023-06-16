@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hr_app/cubit/fire_auth_cubit.dart';
+
+import '../cubit/Fire_auth/fire_auth_cubit.dart';
 
 class AccountLayout extends StatelessWidget {
   const AccountLayout({super.key});

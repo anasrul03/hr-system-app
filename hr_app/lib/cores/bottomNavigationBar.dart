@@ -20,14 +20,8 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
     MyCustomBottomNavBarItem(
       icon: Icon(Icons.dashboard_outlined),
       activeIcon: Icon(Icons.dashboard),
-      label: 'HOME',
+      label: 'Dashboard',
       initialLocation: homePage,
-    ),
-    MyCustomBottomNavBarItem(
-      icon: Icon(Icons.receipt_long_outlined),
-      activeIcon: Icon(Icons.receipt_long),
-      label: 'Claim',
-      initialLocation: claimPage,
     ),
     MyCustomBottomNavBarItem(
       icon: Icon(Icons.monetization_on_outlined),
