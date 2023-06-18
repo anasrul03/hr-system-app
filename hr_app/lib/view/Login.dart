@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:hive_flutter/adapters.dart';
 import 'package:hr_app/view/Home.dart';
+import 'package:hr_app/view/MainScreen.dart';
 import 'package:hr_app/view/Register.dart';
 
 import '../components/customtextformfield.dart';
 import '../cubit/Fire_auth/fire_auth_cubit.dart';
 import '../cubit/Fire_auth/fire_auth_state.dart';
+import '../routes/app_route.dart';
 
 class LoginLayout extends StatefulWidget {
   VoidCallback? toSignUpPage;
@@ -25,7 +28,6 @@ class _LoginLayoutState extends State<LoginLayout> {
   void initState() {
     super.initState();
     _obscurePassword = true;
-    FireAuthRepo().checkSignin();
   }
 
   @override
@@ -74,9 +76,10 @@ class _LoginLayoutState extends State<LoginLayout> {
                       fixedSize: MaterialStateProperty.all(const Size(200, 40)),
                     ),
                     onPressed: () {
-                      context.read<FireAuthRepo>().showLoaderDialog(context);
                       context.read<FireAuthRepo>().logIn(context, isLoading);
-                      Navigator.pop(context);
+                      WidgetsBinding.instance!.addPostFrameCallback((_) {
+                        Navigator.of(context).pop();
+                      });
                     },
                     icon: const Icon(Icons.login),
                     label: const Text("Login"))

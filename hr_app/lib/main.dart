@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hr_app/routes/app_route.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'cubit/Fire_auth/fire_auth_cubit.dart';
 import 'firebase_options.dart';
 
@@ -10,14 +11,17 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({
+    super.key,
+  });
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -26,7 +30,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     FireAuthRepo().checkSignin();
   }
@@ -53,9 +56,9 @@ class _MyAppState extends State<MyApp> {
               },
             ),
           ),
-          routerDelegate: router.routerDelegate,
-          routeInformationParser: router.routeInformationParser,
-          routeInformationProvider: router.routeInformationProvider,
+          routerDelegate: AppRouter().router.routerDelegate,
+          routeInformationParser: AppRouter().router.routeInformationParser,
+          routeInformationProvider: AppRouter().router.routeInformationProvider,
         ),
       ),
     );

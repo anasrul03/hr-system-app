@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -79,13 +80,15 @@ class FireAuthRepo extends Cubit<FireAuthState> {
   }
 
   Future logIn(BuildContext context, bool loaded) async {
-    checkSignin();
     try {
       var user = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: state.email,
         password: state.password,
       );
       emit(state.copyWith(user: user.user));
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      // Try reading data from the 'action' key. If it doesn't exist, returns null.
+      prefs.setString('email', state.email!);
       print(user);
       Fluttertoast.showToast(
           msg: "Successfully Logged as ${state.email}",
@@ -107,13 +110,14 @@ class FireAuthRepo extends Cubit<FireAuthState> {
           fontSize: 16.0);
     }
     loaded = false;
-    navigatorKey.currentState!.popUntil((route) => route.isFirst);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      navigatorKey.currentState!.popUntil((route) => route.isFirst);
+    });
   }
 
   Future signOut(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signOut();
-
       emit(state.copyWith(
           email: "", password: "", status: FireAuthStatus.initial));
       Fluttertoast.showToast(
@@ -143,24 +147,5 @@ class FireAuthRepo extends Cubit<FireAuthState> {
           textColor: Colors.white,
           fontSize: 16.0);
     }
-  }
-
-  showLoaderDialog(BuildContext context) {
-    AlertDialog alert = AlertDialog(
-      content: Row(
-        children: [
-          CircularProgressIndicator(),
-          Container(
-              margin: EdgeInsets.only(left: 7), child: Text("Loading...")),
-        ],
-      ),
-    );
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
   }
 }
